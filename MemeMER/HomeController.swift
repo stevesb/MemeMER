@@ -16,7 +16,11 @@ class HomeController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         super.viewDidLoad()
         view.backgroundColor = UIColor.black
         navigationItem.title = "MemeMER"
-        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: nil)
+        navigationItem.leftBarButtonItem?.tintColor = UIColor.black
+        navigationItem.rightBarButtonItem?.tintColor = UIColor.black
+        navigationItem.leftBarButtonItem?.isEnabled = false
         view.addSubview(imageView)
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -32,6 +36,8 @@ class HomeController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         bottomTextField.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
 
         self.navigationController?.isToolbarHidden = false
+        self.navigationController?.toolbar.barTintColor = UIColor.lightGray
+        self.navigationController?.toolbar.tintColor = UIColor.black
         let addButton = UIBarButtonItem(title: "Album", style: .plain, target: self, action: #selector(addButtonTapped))
          cameraButton = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(cameraButtonTapped))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
@@ -113,9 +119,11 @@ class HomeController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         image.backgroundColor = UIColor.clear
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
         return image
+        
     }()
-
+    
     func addButtonTapped() {
         
         let imagePicker = UIImagePickerController()
@@ -139,6 +147,7 @@ class HomeController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             imageView.image = image
             self.dismiss(animated: true, completion: nil)
+            navigationItem.leftBarButtonItem?.isEnabled = true
         }
     }
     
@@ -201,4 +210,79 @@ class HomeController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         return false
     }
     
+    struct Meme {
+        var topText: String
+        var bottomText: String
+        var originalImage: UIImage
+        var memedImage: UIImage
+        
+        init (topText: String, bottomText: String, originalImage : UIImage, memedImage: UIImage){
+            self.topText = topText
+            self.bottomText = bottomText
+            self.originalImage = originalImage
+            self.memedImage = memedImage
+        }
+    
+    }
+    
+    func generateMemedImage() -> UIImage {
+
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        navigationItem.leftBarButtonItem?.isEnabled = true
+
+        return memedImage
+    }
+    
+    func save() {
+        
+        let memedImage = generateMemedImage()
+        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageView.image!, memedImage: memedImage)
+        dismiss(animated: true, completion: nil)
+
+    }
+    
+    func shareButtonTapped(sender: Any) {
+        
+        let memedImage = generateMemedImage()
+        let activityView = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
+        
+        if let popoverPresentationController = activityView.popoverPresentationController {
+            popoverPresentationController.barButtonItem = (sender as! UIBarButtonItem)
+        }
+        present(activityView, animated: true, completion: nil)
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
