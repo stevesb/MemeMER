@@ -7,17 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11C593451E005FB9009B8365 /* Meme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C593441E005FB9009B8365 /* Meme.swift */; };
+		11E6F0931E00906B00A63204 /* SentMemeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E6F0921E00906B00A63204 /* SentMemeTableViewController.swift */; };
+		11E6F0951E00909500A63204 /* SentMemeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E6F0941E00909500A63204 /* SentMemeCollectionViewController.swift */; };
+		11E6F0971E00A63A00A63204 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E6F0961E00A63A00A63204 /* TabBarViewController.swift */; };
 		11F5EFE21DFA51F7001BD89A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F5EFE11DFA51F7001BD89A /* AppDelegate.swift */; };
-		11F5EFE41DFA51F7001BD89A /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F5EFE31DFA51F7001BD89A /* HomeController.swift */; };
+		11F5EFE41DFA51F7001BD89A /* MemeEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F5EFE31DFA51F7001BD89A /* MemeEditorController.swift */; };
 		11F5EFE71DFA51F7001BD89A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11F5EFE51DFA51F7001BD89A /* Main.storyboard */; };
 		11F5EFE91DFA51F7001BD89A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11F5EFE81DFA51F7001BD89A /* Assets.xcassets */; };
 		11F5EFEC1DFA51F7001BD89A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11F5EFEA1DFA51F7001BD89A /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11C593441E005FB9009B8365 /* Meme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Meme.swift; sourceTree = "<group>"; };
+		11E6F0921E00906B00A63204 /* SentMemeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SentMemeTableViewController.swift; sourceTree = "<group>"; };
+		11E6F0941E00909500A63204 /* SentMemeCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SentMemeCollectionViewController.swift; sourceTree = "<group>"; };
+		11E6F0961E00A63A00A63204 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		11F5EFDE1DFA51F7001BD89A /* MemeMER.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemeMER.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11F5EFE11DFA51F7001BD89A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		11F5EFE31DFA51F7001BD89A /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
+		11F5EFE31DFA51F7001BD89A /* MemeEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemeEditorController.swift; sourceTree = "<group>"; };
 		11F5EFE61DFA51F7001BD89A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		11F5EFE81DFA51F7001BD89A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		11F5EFEB1DFA51F7001BD89A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -55,10 +63,14 @@
 			isa = PBXGroup;
 			children = (
 				11F5EFE11DFA51F7001BD89A /* AppDelegate.swift */,
-				11F5EFE31DFA51F7001BD89A /* HomeController.swift */,
-				11F5EFE51DFA51F7001BD89A /* Main.storyboard */,
+				11E6F0961E00A63A00A63204 /* TabBarViewController.swift */,
+				11E6F0921E00906B00A63204 /* SentMemeTableViewController.swift */,
+				11E6F0941E00909500A63204 /* SentMemeCollectionViewController.swift */,
+				11F5EFE31DFA51F7001BD89A /* MemeEditorController.swift */,
+				11C593441E005FB9009B8365 /* Meme.swift */,
 				11F5EFE81DFA51F7001BD89A /* Assets.xcassets */,
 				11F5EFEA1DFA51F7001BD89A /* LaunchScreen.storyboard */,
+				11F5EFE51DFA51F7001BD89A /* Main.storyboard */,
 				11F5EFED1DFA51F7001BD89A /* Info.plist */,
 			);
 			path = MemeMER;
@@ -91,7 +103,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = baybros;
 				TargetAttributes = {
 					11F5EFDD1DFA51F6001BD89A = {
@@ -137,8 +149,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11F5EFE41DFA51F7001BD89A /* HomeController.swift in Sources */,
+				11C593451E005FB9009B8365 /* Meme.swift in Sources */,
+				11E6F0951E00909500A63204 /* SentMemeCollectionViewController.swift in Sources */,
+				11F5EFE41DFA51F7001BD89A /* MemeEditorController.swift in Sources */,
 				11F5EFE21DFA51F7001BD89A /* AppDelegate.swift in Sources */,
+				11E6F0971E00A63A00A63204 /* TabBarViewController.swift in Sources */,
+				11E6F0931E00906B00A63204 /* SentMemeTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,6 +198,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -232,6 +249,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
