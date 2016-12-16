@@ -13,8 +13,13 @@ private let reuseIdentifier = "Cell"
 class SentMemeCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.memes = memes
+//        memes = appDelegate.memes   throws an  error
         
         collectionView?.backgroundColor = UIColor.white
         
@@ -45,11 +50,16 @@ class SentMemeCollectionViewController: UICollectionViewController, UICollection
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 3
     }
+ 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 3
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let space:CGFloat = 3.0
-        let dimension = (view.frame.size.width - (2 * space)) / 3.0
-        return CGSize(width: dimension, height: dimension)
+        let width = (view.frame.size.width - (2 * space)) / 3
+        let height = view.frame.size.height / 5.5
+        return CGSize(width: width, height: height)
     }
 
 }
@@ -60,12 +70,18 @@ class MemeCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
 
         addSubview(memeImage)
-        memeImage.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+        memeImage.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        memeImage.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        memeImage.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        memeImage.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        
     }
     
     let memeImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     

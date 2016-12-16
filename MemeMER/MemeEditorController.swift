@@ -13,14 +13,12 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
     var cameraButton: UIBarButtonItem!
     
     var memes: [Meme]!
- 
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.black
-
+        
         setupNavBar()
         memeImageView()
         setupToolBar()
@@ -63,28 +61,80 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         navigationItem.leftBarButtonItem?.isEnabled = false
 //        navigationController?.navigationBar.barTintColor = UIColor.lightGray
     }
+
+    var toolbarHeight: CGFloat?
+    var navigationHeight: CGFloat?
+    var totalBarHeight: CGFloat?
     
+    var topConstraint: NSLayoutConstraint?
+    var bottomConstraint: NSLayoutConstraint?
+    
+    var topTextConstraint: NSLayoutConstraint?
+    
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        
+        setupTextViews()
+        
+    }
     
     func memeImageView() {
+        
+        toolbarHeight = navigationController?.toolbar.frame.height
+        navigationHeight = navigationController?.navigationBar.frame.height
+        totalBarHeight = toolbarHeight! + navigationHeight!
+
         view.addSubview(imageView)
-        imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        imageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        imageView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        
+        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        imageView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        imageView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -totalBarHeight!).isActive = true
         
         
+        view.addSubview(topTextField)
+        view.addSubview(bottomTextField)
         
-        if let nHeight = navigationController?.navigationBar.frame.height, let tbHeight = navigationController?.toolbar.frame.height {
-            
-            view.addSubview(topTextField)
-            topTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: nHeight).isActive = true
-            topTextField.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-            
-            view.addSubview(bottomTextField)
-            bottomTextField.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -tbHeight).isActive = true
-            bottomTextField.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-            
+        topTextField.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
+        bottomTextField.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
+        
+        setupTextViews()
+    }
+    func setupTextViews(){
+        
+        let isLandscape = UIDevice.current.orientation.isLandscape
+        
+        let decision = isLandscape ? imageView.frame.height : view.frame.width
+        
+        let imageWidth = (decision - 40) / 2 // 40 is from the text's height
+        
+        if topConstraint == nil {
+            topConstraint = topTextField.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
         }
+        topConstraint?.constant = -imageWidth
+        topConstraint?.isActive = true
+        
+        if bottomConstraint == nil {
+            bottomConstraint = bottomTextField.centerYAnchor.constraint(equalTo: imageView.centerYAnchor, constant: imageWidth)
+        }
+        bottomConstraint?.constant = imageWidth
+        bottomConstraint?.isActive = true
+        
+        
+        let textWidth = min(view.frame.width,view.frame.height - totalBarHeight!)
+        if topTextConstraint == nil{
+            topTextConstraint = topTextField.widthAnchor.constraint(equalToConstant: textWidth)
+            topTextConstraint?.isActive = true
+        }
+        else{
+            topTextConstraint?.constant = textWidth
+        }
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            
+            self.view.layoutIfNeeded()
+            
+        }, completion: nil)
+        
     }
     
     func setupToolBar() {
@@ -135,7 +185,6 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
     }()
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        
         if textField.text == "TOP" || textField.text == "BOTTOM" {
             textField.text = ""
         }
@@ -143,8 +192,8 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     lazy var imageView: UIImageView = {
         let image = UIImageView()
-        image.backgroundColor = UIColor.clear
         image.translatesAutoresizingMaskIntoConstraints = false
+        image.tintColor = UIColor.red
         image.contentMode = .scaleAspectFit
         image.clipsToBounds = true
         return image
@@ -219,7 +268,15 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     func generateMemedImage() -> UIImage {
-        UIGraphicsBeginImageContext(view.frame.size)
+        let isLandscape = UIDevice.current.orientation.isLandscape
+        
+//        let frame = isLandscape ? CGRect(x: view.frame.x, y: <#T##CGFloat#>, width: <#T##CGFloat#>, height: <#T##CGFloat#>)
+        
+        print(view.frame)
+        
+        print(imageView.frame)
+        
+        UIGraphicsBeginImageContext(view.bounds.size)
         view.drawHierarchy(in: view.frame, afterScreenUpdates: true)
         let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
@@ -232,6 +289,7 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: memedImage, memedImage: memedImage)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.memes.append(meme)
+        dismiss(animated: true, completion: nil)
     }
     
     func shareButtonTapped(image: UIImage) {
