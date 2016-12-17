@@ -268,14 +268,6 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     func generateMemedImage() -> UIImage {
-        let isLandscape = UIDevice.current.orientation.isLandscape
-        
-//        let frame = isLandscape ? CGRect(x: view.frame.x, y: <#T##CGFloat#>, width: <#T##CGFloat#>, height: <#T##CGFloat#>)
-        
-        print(view.frame)
-        
-        print(imageView.frame)
-        
         UIGraphicsBeginImageContext(view.bounds.size)
         view.drawHierarchy(in: view.frame, afterScreenUpdates: true)
         let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!

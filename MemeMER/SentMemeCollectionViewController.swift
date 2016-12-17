@@ -11,29 +11,25 @@ import UIKit
 private let reuseIdentifier = "Cell"
 
 class SentMemeCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-
     
+    var memes: [Meme] {
+        return (UIApplication.shared.delegate as! AppDelegate).memes
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.memes = memes
-//        memes = appDelegate.memes   throws an  error
+//        memes = appDelegate.memes  Throws an error
         
         collectionView?.backgroundColor = UIColor.white
         
-        collectionView?.register(MemeCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
+        collectionView?.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         collectionView?.reloadData()
-        
-    }
-    
-    var memes: [Meme] {
-        return (UIApplication.shared.delegate as! AppDelegate).memes
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -42,7 +38,7 @@ class SentMemeCollectionViewController: UICollectionViewController, UICollection
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MemeCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CustomCollectionViewCell
         cell.memeImage.image = memes[indexPath.item].memedImage
         return cell
     }
@@ -64,32 +60,7 @@ class SentMemeCollectionViewController: UICollectionViewController, UICollection
 
 }
 
-class MemeCollectionViewCell: UICollectionViewCell {
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        addSubview(memeImage)
-        memeImage.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        memeImage.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        memeImage.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        memeImage.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        
-    }
-    
-    let memeImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        return imageView
-    }()
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-}
 
 
 

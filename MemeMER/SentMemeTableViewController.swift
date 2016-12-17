@@ -10,90 +10,88 @@ import UIKit
 
 class SentMemeTableViewController: UITableViewController {
 
+    private var cellId = "reuseIdentifier"
+    
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    var memes: [Meme]!
- 
+    var memes = [Meme]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        view.backgroundColor = UIColor.white
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        memes = appDelegate.memes
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        memes = appDelegate.memes
+        
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: cellId)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView?.reloadData()
+        
     }
     
     func addButtonTapped() {
         present(MemeEditorController(), animated: true, completion: nil)
     }
 
-    func collectionViewButtonTapped() {
-        present(SentMemeCollectionViewController(), animated: true, completion: nil)
-    }
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        // #warning Incomplete implementation, return the number of sections
+//        return memes.count
+//    }
+ 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return memes.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! TableViewCell
+        
+        cell.memeLabel.text = "\(memes[indexPath.item].topText)...\(memes[indexPath.item].bottomText)"
+        cell.memeImage.image = memes[indexPath.item].memedImage
+        cell.backgroundColor = UIColor.blue
 
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
+
+class TableViewCell: UITableViewCell {
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    let memeImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = UIColor.black
+        imageView.clipsToBounds = true
+        imageView.image = UIImage(named: "collectionViewButton")
+        return imageView
+    }()
+    
+    let memeLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "ccc"
+        return label
+    }()
+    
+    func setupViews() {
+        addSubview(memeImage)
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[v0](50)|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": memeImage]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": memeImage]))
+        addSubview(memeLabel)
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-60-[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": memeLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": memeLabel]))
+        
+    }
+}
+
+

@@ -13,8 +13,44 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
-        tabBar.barTintColor = UIColor.lightGray
+        setupControllers()
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        view.addSubview(noMemeLabel)
+        noMemeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive =  true
+        noMemeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        noMemeLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        if memes.count == 0 {
+            noMemeLabel.isHidden = false
+        } else {
+            noMemeLabel.isHidden = true
+        }
+    }
+    
+    func addButtonTapped() {
+        let memeNavigationController = UINavigationController(rootViewController: MemeEditorController())
+        present(memeNavigationController, animated: true, completion: nil)
+    }
+    
+    var memes: [Meme] {
+        return (UIApplication.shared.delegate as! AppDelegate).memes
+    }
+    
+    let noMemeLabel: UILabel = {
+        var label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "You have not created any meme yet! To create one use the plus sign!"
+        label.numberOfLines = 2
+        label.textColor = UIColor.lightGray
+        label.textAlignment = .center
+        label.font = UIFont(name: "Palatino-Italic", size: 18)
+        return label
+    }()
+    
+    func setupControllers() {
+
         UITabBar.appearance().tintColor = UIColor.black
         
         let tableController = SentMemeTableViewController()
@@ -22,7 +58,6 @@ class TabBarController: UITabBarController {
         tableController.navigationItem.title = "Sent Memes"
         tableController.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
         tableController.navigationItem.rightBarButtonItem?.tintColor = UIColor.black
-        tableNavigationController.navigationBar.barTintColor = UIColor.orange
         tableNavigationController.tabBarItem.image = UIImage(named: "tableViewButton")
         tableNavigationController.tabBarItem.badgeColor = UIColor.black
         
@@ -32,16 +67,9 @@ class TabBarController: UITabBarController {
         collectionController.navigationItem.title = "Sent Memes"
         collectionController.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
         collectionController.navigationItem.rightBarButtonItem?.tintColor = UIColor.black
-        collectionNavigationController.navigationBar.barTintColor = UIColor.orange
         collectionNavigationController.tabBarItem.image = UIImage(named: "collectionViewButton")
-
+        
         viewControllers = [tableNavigationController, collectionNavigationController]
-
-    }
-    
-    func addButtonTapped() {
-        let memeNavigationController = UINavigationController(rootViewController: MemeEditorController())
-        present(memeNavigationController, animated: true, completion: nil)
     }
 
 }
