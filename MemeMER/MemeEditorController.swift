@@ -99,6 +99,7 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         
         setupTextViews()
     }
+    
     func setupTextViews(){
         
         let isLandscape = UIDevice.current.orientation.isLandscape
@@ -276,7 +277,7 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         return memedImage
     }
     
-    func save(memedImage: UIImage) {
+    func save() {
         let memedImage = generateMemedImage()
         let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: memedImage, memedImage: memedImage)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -291,7 +292,7 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         
         activityView.completionWithItemsHandler = {activity, completed, items, error in
             if completed {
-                self.save(memedImage: image)
+                self.save()
             }
         }
         present(activityView, animated: true, completion: nil)

@@ -16,7 +16,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
         addSubview(memeImage)
         memeImage.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         memeImage.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        memeImage.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        memeImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 2).isActive = true
         memeImage.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }
     

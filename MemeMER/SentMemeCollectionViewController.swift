@@ -21,11 +21,11 @@ class SentMemeCollectionViewController: UICollectionViewController, UICollection
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.memes = memes
-//        memes = appDelegate.memes  Throws an error
         
         collectionView?.backgroundColor = UIColor.white
         
         collectionView?.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +58,17 @@ class SentMemeCollectionViewController: UICollectionViewController, UICollection
         return CGSize(width: width, height: height)
     }
 
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedMeme = memes[indexPath.item].memedImage
+        let controller = DetailViewController()
+        controller.imageView.image = selectedMeme
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem
+        
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 
