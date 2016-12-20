@@ -11,6 +11,13 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    // edit collection vs table code repeat
+    // after first save to see on table view need to go to collection view and then come back
+    // when went back to the tab bar sentmemes table view, tableview starts behind naavigationbar
+    // after didselect item from either table view or collection view, navigation back button clicked there is no tab bar
+    // in edit mode couldnt make toolbar constraint to the bottom of the screen
+    
+    
     var window: UIWindow?
     var memes = [Meme]()
     

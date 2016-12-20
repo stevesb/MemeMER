@@ -27,6 +27,9 @@ class TabBarController: UITabBarController {
         } else {
             noMemeLabel.isHidden = true
         }
+        
+        viewControllers?[0].viewWillAppear(true)
+        viewControllers?[1].viewWillAppear(true)
     }
     
     func addButtonTapped() {
@@ -73,15 +76,3 @@ class TabBarController: UITabBarController {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

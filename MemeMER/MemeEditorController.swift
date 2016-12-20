@@ -14,6 +14,10 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     var memes: [Meme]!
 
+    var meme: Meme?
+    
+    var fromDetail = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,9 +28,23 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         setupToolBar()
         setupTapHideKeyboard()
         
+        if let meme = self.meme{
+            imageView.image = meme.originalImage
+        }
+        
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
     
+        if meme != nil{
+            topTextField.text = meme?.topText
+            bottomTextField.text = meme?.bottomText
+            imageView.image = meme?.originalImage
+        }
+    }
+    
+    func backBtn() {
+        present(TabBarController(), animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,12 +54,19 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
             cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         }
         subscribeToKeyboardNotifications()
+        
+        tabBarController?.tabBar.isHidden = true
 
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
+        
+        if fromDetail == true {
+            tabBarController?.tabBar.isHidden = false
+        }
+
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -58,7 +83,7 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButtonTapped))
         navigationItem.leftBarButtonItem?.tintColor = UIColor.black
         navigationItem.rightBarButtonItem?.tintColor = UIColor.black
-        navigationItem.leftBarButtonItem?.isEnabled = false
+//        navigationItem.leftBarButtonItem?.isEnabled = false
 //        navigationController?.navigationBar.barTintColor = UIColor.lightGray
     }
 
@@ -79,16 +104,16 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     func memeImageView() {
         
-        toolbarHeight = navigationController?.toolbar.frame.height
-        navigationHeight = navigationController?.navigationBar.frame.height
-        totalBarHeight = toolbarHeight! + navigationHeight!
+//        toolbarHeight = navigationController?.toolbar.frame.height
+//        navigationHeight = navigationController?.navigationBar.frame.height
+//        totalBarHeight = toolbarHeight! + navigationHeight!
 
         view.addSubview(imageView)
         
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         imageView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        imageView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -totalBarHeight!).isActive = true
+        imageView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         
         
         view.addSubview(topTextField)
@@ -109,7 +134,7 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         let imageWidth = (decision - 40) / 2 // 40 is from the text's height
         
         if topConstraint == nil {
-            topConstraint = topTextField.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
+            topConstraint = topTextField.centerYAnchor.constraint(equalTo: imageView.centerYAnchor, constant: 50)
         }
         topConstraint?.constant = -imageWidth
         topConstraint?.isActive = true
@@ -121,7 +146,7 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         bottomConstraint?.isActive = true
         
         
-        let textWidth = min(view.frame.width,view.frame.height - totalBarHeight!)
+        let textWidth = min(view.frame.width,view.frame.height)
         if topTextConstraint == nil{
             topTextConstraint = topTextField.widthAnchor.constraint(equalToConstant: textWidth)
             topTextConstraint?.isActive = true
@@ -147,6 +172,7 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         spacer.width = 75
         toolbarItems = [spacer, cameraButton, spacer, albumButton, spacer]
+
     }
     
     func setupTapHideKeyboard() {
@@ -178,11 +204,13 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     lazy var topTextField: UITextField = {
-        self.configureTextFields(defaultText: "TOP", textFieldTag: 0, ReturnKeyType: .next)
+        let txt = self.meme != nil ? self.meme?.topText : "TOP"
+        return self.configureTextFields(defaultText: txt!, textFieldTag: 0, ReturnKeyType: .next)
     }()
     
     lazy var bottomTextField: UITextField = {
-        self.configureTextFields(defaultText: "BOTTOM", textFieldTag: 1, ReturnKeyType: .done)
+        let txt = self.meme != nil ? self.meme?.topText : "BOTTOM"
+        return self.configureTextFields(defaultText: txt!, textFieldTag: 1, ReturnKeyType: .done)
     }()
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -204,7 +232,7 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = source
-        imagePicker.allowsEditing = true
+//        imagePicker.allowsEditing = true
         imagePicker.setEditing(true, animated: true)
         present(imagePicker, animated: true, completion: nil)
     }
@@ -218,10 +246,10 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             imageView.image = image
             dismiss(animated: true, completion: nil)
-            navigationItem.leftBarButtonItem?.isEnabled = true
+//            navigationItem.leftBarButtonItem?.isEnabled = true
         }
     }
     
@@ -273,18 +301,18 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
         view.drawHierarchy(in: view.frame, afterScreenUpdates: true)
         let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        navigationItem.leftBarButtonItem?.isEnabled = true
+//        navigationItem.leftBarButtonItem?.isEnabled = true
         return memedImage
     }
     
     func save() {
         let memedImage = generateMemedImage()
-        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: memedImage, memedImage: memedImage)
+        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageView.image!, memedImage: memedImage)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.memes.append(meme)
         dismiss(animated: true, completion: nil)
     }
-    
+ 
     func shareButtonTapped(image: UIImage) {
         
         let memedImage = generateMemedImage()
@@ -299,6 +327,11 @@ class MemeEditorController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     func cancelButtonTapped(sender: Any) {
+        if fromDetail == true {
+            let controller = TabBarController()
+            navigationController?.present(controller, animated: true, completion: nil)
+        } else {
         dismiss(animated: true, completion: nil)
+        }
     }
 }

@@ -10,13 +10,12 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
-    var meme: Meme!
+    var memeToEdit: Meme?
     
-    var index: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.orange
+        view.backgroundColor = UIColor.black
         navigationController?.navigationBar.tintColor = UIColor.black
         navigationItem.title = "MemeMER"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped))
@@ -25,6 +24,11 @@ class DetailViewController: UIViewController {
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
 //        imageView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        
+        if let meme = memeToEdit{
+            imageView.image = meme.memedImage
+        }
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,6 +40,8 @@ class DetailViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
+        let toolbar = navigationController?.toolbar
+        toolbar?.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
     lazy var imageView: UIImageView = {
@@ -48,13 +54,10 @@ class DetailViewController: UIViewController {
     }()
 
     func editButtonTapped() {
-        let controller = present(MemeEditorController(), animated: true, completion: nil)
-
+        let controller = MemeEditorController()
+        controller.fromDetail = true
+        controller.meme = memeToEdit
+        navigationController?.pushViewController(controller, animated: true)
     }
     
 }
-
-
-
-
-

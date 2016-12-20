@@ -14,4 +14,3 @@ import UIKit
         let originalImage: UIImage
         let memedImage: UIImage
     }
-

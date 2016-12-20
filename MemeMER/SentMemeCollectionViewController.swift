@@ -59,22 +59,17 @@ class SentMemeCollectionViewController: UICollectionViewController, UICollection
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedMeme = memes[indexPath.item].memedImage
         let controller = DetailViewController()
-        controller.imageView.image = selectedMeme
-        
-        let backItem = UIBarButtonItem()
-        backItem.title = ""
-        navigationItem.backBarButtonItem = backItem
+        controller.memeToEdit = memes[indexPath.item]
         
         navigationController?.pushViewController(controller, animated: true)
+        
+//        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(backBtn))
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(backBtn))
+    }
+    
+    func backBtn() {
+        let controller = TabBarController()
+        navigationController?.present(controller, animated: true, completion: nil)
     }
 }
-
-
-
-
-
-
-
-
