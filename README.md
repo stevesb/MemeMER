@@ -1,9 +1,9 @@
 # MemeMER
 Meme Generator
 
-IDE: Xcode 8.0+ 
+**IDE**: Xcode 8.0+ 
 
-Language: Swift 3
+**Language**: Swift 3
 
 # Summary
 
