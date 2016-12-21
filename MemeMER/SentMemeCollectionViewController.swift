@@ -64,7 +64,6 @@ class SentMemeCollectionViewController: UICollectionViewController, UICollection
         
         navigationController?.pushViewController(controller, animated: true)
         
-//        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(backBtn))
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(backBtn))
     }
     

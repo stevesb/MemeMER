@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "SentMemeTableViewController.tableView(UITableView, numberOfRowsInSection : Int) -&gt; Int:SentMemeTableViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "memes.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MemeEditorController.generateMemedImage() -&gt; UIImage:MemeEditorController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "navigationHeight">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MemeEditorController.viewDidLoad() -&gt; ():MemeEditorController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "meme">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MemeEditorController.(imageView.getter).(closure #1):MemeEditorController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.meme">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "DetailViewController.editButtonTapped() -&gt; ():DetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "memeToEdit">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MemeEditorController.memeImageView() -&gt; ():MemeEditorController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "min(imageView.frame.width,imageView.frame.height)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
